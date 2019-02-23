@@ -1,5 +1,6 @@
 (def square (comp (partial apply *) (partial repeat 2)))
 
+
 (def trim-ends (comp rest butlast))
 
 (def ends-equal? (comp (partial apply =) (juxt first last)))
@@ -9,20 +10,21 @@
                   (partial take-while (complement empty?))
                   (partial iterate trim-ends)))
 
+
 (def factorial (comp (partial apply *) (comp (partial range 2) inc) ))
 
-(def first-not-divisible-by-last? (comp (complement zero?)(partial apply mod) (juxt last first)))
 
-(def prime? (comp
-             (partial every? first-not-divisible-by-last?)
-             (partial butlast)
-             (partial take-while (complement empty?))
-             (partial iterate rest)
-             (partial range 2)
-             inc))
+(def factor? (comp zero? mod))
 
-(def my-take (comp (partial apply take) reverse list))
+(def factors (comp
+              (partial apply filter)
+              (juxt (partial partial factor?) (partial range 2))))
+
+(def prime? (comp zero? count factors))
+
+
 ; reversed the arguments of take
+(def my-take (comp (partial apply take) reverse list))
 
 (def add-last-two (comp (partial apply +) (juxt last (comp last butlast))))
 
